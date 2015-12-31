@@ -24,6 +24,7 @@ except:
 import re
 import random
 import decimal
+import cdecimal
 from functools import partial
 
 PY3 = (sys.version_info[0] >= 3)
@@ -44,6 +45,12 @@ class UltraJSONTests(unittest.TestCase):
         encoded = ujson.encode(sut, double_precision=100)
         decoded = ujson.decode(encoded)
         self.assertEqual(decoded, 1337.1337)
+
+    def test_encodeCDecimal(self):
+         sut = cdecimal.Decimal("1337.1337")
+         encoded = ujson.encode(sut, double_precision=100)
+         decoded = ujson.decode(encoded)
+         self.assertEquals(decoded, 1337.1337)
 
     def test_encodeStringConversion(self):
         input = "A string \\ / \b \f \n \r \t </script> &"
