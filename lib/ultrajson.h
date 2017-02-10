@@ -117,6 +117,14 @@ typedef uint32_t JSUINT32;
 
 #define INLINE_PREFIX inline
 
+#ifdef __GNUC__
+#define LIKELY(x)       __builtin_expect(!!(x), 1)
+#define UNLIKELY(x)     __builtin_expect(!!(x), 0)
+#else
+#define LIKELY(x)       (x)
+#define UNLIKELY(x)     (x)
+#endif
+
 typedef uint8_t JSUINT8;
 typedef uint16_t JSUTF16;
 typedef uint32_t JSUTF32;
@@ -154,6 +162,7 @@ enum JSTYPES
   JT_ULONG,     // (JSUINT64 (unsigned 64-bit))
   JT_DOUBLE,    // (double)
   JT_UTF8,      // (char 8-bit)
+  JT_RAW,       // (raw char 8-bit)
   JT_ARRAY,     // Array structure
   JT_OBJECT,    // Key/Value structure
   JT_INVALID,   // Internal, do not return nor expect
@@ -295,8 +304,6 @@ If the return value doesn't equal the specified buffer caller must release the m
 JSONObjectEncoder.free or free() as specified when calling this function.
 */
 EXPORTFUNCTION char *JSON_EncodeObject(JSOBJ obj, JSONObjectEncoder *enc, char *buffer, size_t cbBuffer);
-
-
 
 typedef struct __JSONObjectDecoder
 {

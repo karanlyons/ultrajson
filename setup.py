@@ -3,7 +3,6 @@ try:
 except ImportError:
   from distutils.core import setup, Extension
 import distutils.sysconfig
-import shutil
 import os.path
 import re
 import sys
@@ -21,11 +20,6 @@ Programming Language :: Python :: 2.7
 Programming Language :: Python :: 3
 Programming Language :: Python :: 3.2
 """.splitlines()))
-
-try:
-    shutil.rmtree("./build")
-except(OSError):
-    pass
 
 module1 = Extension('ujson',
                     sources = ['./python/ujson.c', 
@@ -68,10 +62,3 @@ setup (name = 'ujson',
        url="http://www.esn.me",
        classifiers=CLASSIFIERS,
        )
-
-if sys.version_info[0] >= 3:
-    print( "*" * 100)
-    print("If you want to run the tests be sure to run 2to3 on them first, "
-          "e.g. `2to3 -w tests/tests.py`.")
-    print("*" * 100)
-
